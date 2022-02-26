@@ -10,6 +10,7 @@ import android.widget.TextView
 import br.infnet.dr3_gabriel_justino_tp3.R
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.databinding.MainFragmentBinding
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +47,11 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.allSessionsLiveData.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                println("$it")
+            }
+        })
         binding.message.setOnClickListener { mview->
 
             GlobalScope.launch(Dispatchers.IO){

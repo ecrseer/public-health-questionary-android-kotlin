@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSession
 import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSessionDAO
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
     entities = arrayOf(EvaluatorSession::class),
     version = 1
 )
+@TypeConverters(CriptoConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun getEvaluatorSessionDAO():EvaluatorSessionDAO
     companion object {
