@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSession
 import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSessionDAO
+import kotlinx.coroutines.CoroutineScope
 
 @Database(
     entities = arrayOf(EvaluatorSession::class),
@@ -17,7 +18,7 @@ abstract class AppDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase {
+        fun getInstance(context: Context,scope:CoroutineScope): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context,
@@ -30,5 +31,8 @@ abstract class AppDatabase: RoomDatabase() {
                 instance
             }
         }
+
+
+
     }
 }

@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import br.infnet.dr3_gabriel_justino_tp3.R
 
 import androidx.fragment.app.viewModels
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.databinding.MainFragmentBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment() {
 
@@ -22,9 +27,12 @@ class MainFragment : Fragment() {
 
 
     //private lateinit var viewModel: MainViewModel
+
     private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory((requireActivity().application
-                as PublicHealthQuestionaryApplication).repository)
+        val application:PublicHealthQuestionaryApplication =
+            requireActivity().application    as PublicHealthQuestionaryApplication
+
+        MainViewModelFactory(application.repository)
     }
 
     override fun onCreateView(
@@ -38,6 +46,18 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.message.setOnClickListener { mview->
+
+            GlobalScope.launch(Dispatchers.IO){
+                viewModel.add().also {
+                    withContext(Dispatchers.Main){
+                        println("$it")
+                    }
+                }
+            }
+
+
+        }
 
     }
 

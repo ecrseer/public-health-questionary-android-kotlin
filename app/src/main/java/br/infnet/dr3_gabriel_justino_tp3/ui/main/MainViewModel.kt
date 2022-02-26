@@ -10,7 +10,6 @@ import kotlinx.coroutines.coroutineScope
 class MainViewModelFactory(private val repository: EvaluatorRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
             return MainViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
@@ -19,11 +18,13 @@ class MainViewModelFactory(private val repository: EvaluatorRepository) : ViewMo
 class MainViewModel(private val repository: EvaluatorRepository) : ViewModel() {
     // TODO: Implement the ViewModel
     suspend fun add(): Long {
-        val test =  EvaluatorSession(null,"petrobras","rj",mutableListOf(""))
+        val test =  EvaluatorSession(null,"petrobras","rj", "sdsf")
         var addedSessionId = 0L
         coroutineScope {
             addedSessionId = async { repository.addNewSession(test) }.await()
         }
         return addedSessionId
     }
+
+
 }

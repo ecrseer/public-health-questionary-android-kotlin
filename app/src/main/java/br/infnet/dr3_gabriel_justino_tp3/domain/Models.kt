@@ -1,10 +1,7 @@
 package br.infnet.dr3_gabriel_justino_tp3.domain
 
 import androidx.annotation.WorkerThread
-import androidx.room.Entity
-import androidx.room.Insert
-import androidx.room.PrimaryKey
-import androidx.room.Query
+import androidx.room.*
 
 @Entity
 data class EvaluatorSession(
@@ -12,21 +9,17 @@ data class EvaluatorSession(
     val idEvaluator:Long? = null,
     val companyName:String,
     val district:String,
-    val answers:MutableList<String>
+    val answers: String
 )
+
+@Dao
 interface EvaluatorSessionDAO{
-    @Query("SELECT * FROM evaluatorsession")
-    fun getAll():List<EvaluatorSession>
     @Insert
     fun insert(evaluatorSession: EvaluatorSession):Long
 }
-class EvaluatorRepository(private val evaluatorSessionDAO: EvaluatorSessionDAO){
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun getAllSessions (): List<EvaluatorSession> {
-        return evaluatorSessionDAO.getAll()
 
-    }
+class EvaluatorRepository(private val evaluatorSessionDAO: EvaluatorSessionDAO){
+
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
