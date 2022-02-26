@@ -23,15 +23,16 @@ class MainFragment : Fragment() {
     companion object {
         fun newInstance() = MainFragment()
     }
-    private var _binding:MainFragmentBinding? = null
+
+    private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
 
     //private lateinit var viewModel: MainViewModel
 
     private val viewModel: MainViewModel by viewModels {
-        val application:PublicHealthQuestionaryApplication =
-            requireActivity().application    as PublicHealthQuestionaryApplication
+        val application: PublicHealthQuestionaryApplication =
+            requireActivity().application as PublicHealthQuestionaryApplication
 
         MainViewModelFactory(application.repository)
     }
@@ -41,28 +42,30 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         //return inflater.inflate(R.layout.main_fragment, container, false)
-        _binding = MainFragmentBinding.inflate(inflater,container,false)
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private fun addSession(textView: TextView) {
+        GlobalScope.launch(Dispatchers.IO) {
+            viewModel.add().also {
+                withContext(Dispatchers.Main) {
+                    println("$it")
+                    textView.setText("$it")
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.allSessionsLiveData.observe(viewLifecycleOwner, Observer {
-            it?.let{
+            it?.let {
                 println("$it")
             }
         })
-        binding.message.setOnClickListener { mview->
-
-            GlobalScope.launch(Dispatchers.IO){
-                viewModel.add().also {
-                    withContext(Dispatchers.Main){
-                        println("$it")
-                    }
-                }
-            }
-
-
+        binding.message.setOnClickListener { mview ->
+            viewModel.readFirstCompanyName()
         }
 
     }

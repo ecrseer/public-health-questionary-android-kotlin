@@ -32,6 +32,12 @@ class MainViewModel(private val repository: EvaluatorRepository) : ViewModel() {
         }
         return addedSessionId
     }
+    fun readFirstCompanyName(){
+        val encriptedName = allSessionsLiveData.value?.first()?.companyName
+        encriptedName?.let {
+            println(it.getClearText())
+        }
+    }
 
 
 }
