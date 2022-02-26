@@ -7,6 +7,9 @@ plugins {
 android {
     compileSdk 31
 
+    viewBinding{
+        enabled=true
+    }
     defaultConfig {
         applicationId "br.infnet.dr3_gabriel_justino_tp3"
         minSdk 23
@@ -49,7 +52,7 @@ dependencies {
     //by viwmodels syntax maneira
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion" 
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.activity:activity-ktx:1.4.0"
     implementation "androidx.fragment:fragment-ktx:1.4.0"
 

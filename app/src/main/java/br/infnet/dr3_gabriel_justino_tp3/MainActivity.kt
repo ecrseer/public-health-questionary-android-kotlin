@@ -2,9 +2,7 @@ package br.infnet.dr3_gabriel_justino_tp3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import br.infnet.dr3_gabriel_justino_tp3.ui.main.MainFragment
-import br.infnet.dr3_gabriel_justino_tp3.ui.main.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 

@@ -10,12 +10,16 @@ import br.infnet.dr3_gabriel_justino_tp3.R
 
 import androidx.fragment.app.viewModels
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
+import br.infnet.dr3_gabriel_justino_tp3.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {
 
     companion object {
         fun newInstance() = MainFragment()
     }
+    private var _binding:MainFragmentBinding? = null
+    private val binding get() = _binding!!
+
 
     //private lateinit var viewModel: MainViewModel
     private val viewModel: MainViewModel by viewModels {
@@ -27,9 +31,15 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        //return inflater.inflate(R.layout.main_fragment, container, false)
+        _binding = MainFragmentBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
 
 
 }
