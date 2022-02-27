@@ -62,10 +62,10 @@
             app:layout_constraintStart_toStartOf="@+id/editTextTextPassword" />
 
         <Button
-            android:id="@+id/create_account_btn"
+            android:id="@+id/confirm_dialog_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="criar"
             app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
     </androidx.constraintlayout.widget.ConstraintLayout>

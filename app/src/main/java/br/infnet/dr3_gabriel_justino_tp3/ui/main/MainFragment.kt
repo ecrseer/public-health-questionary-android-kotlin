@@ -8,13 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import br.infnet.dr3_gabriel_justino_tp3.R
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import br.infnet.dr3_gabriel_justino_tp3.MainActivityViewModel
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.databinding.MainFragmentBinding
 import br.infnet.dr3_gabriel_justino_tp3.ui.main.ui.home.CreateAccountDialog
+import br.infnet.dr3_gabriel_justino_tp3.ui.main.ui.home.SignInAccountDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,14 +35,13 @@ class MainFragment : Fragment() {
     private lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
 
 
-    //private lateinit var viewModel: MainViewModel
-
     private val viewModel: MainViewModel by viewModels {
         val application: PublicHealthQuestionaryApplication =
             requireActivity().application as PublicHealthQuestionaryApplication
 
         MainViewModelFactory(application.repository)
     }
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,10 +73,13 @@ class MainFragment : Fragment() {
         binding.message.setOnClickListener { mview ->
             viewModel.readFirstCompanyName()
         }
-        binding.button.setOnClickListener {
+        binding.createAccountBtn.setOnClickListener {
             /*val startQ = Intent(requireActivity(),QuestionaryActivity::class.java)
             startActivity(startQ)*/
             CreateAccountDialog().show(childFragmentManager,"criar ")
+        }
+        binding.signinButton.setOnClickListener {
+            SignInAccountDialog().show(childFragmentManager,"entrar")
         }
 
     }

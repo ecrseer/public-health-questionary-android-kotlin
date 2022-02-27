@@ -7,11 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.R
@@ -24,7 +22,7 @@ import br.infnet.dr3_gabriel_justino_tp3.R
  * Use the [CreateAccountFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreateAccountDialog : DialogFragment() {
+open class CreateAccountDialog : DialogFragment() {
     private val ARG_PARAM1 = "param1"
     private val ARG_PARAM2 = "param2"
 
@@ -32,10 +30,11 @@ class CreateAccountDialog : DialogFragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
-    private lateinit var emailField:EditText
-    private lateinit var passwordField:EditText
-    private lateinit var createAccountButton: Button
+
+    lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
+    lateinit var emailField:EditText
+    lateinit var passwordField:EditText
+    lateinit var confirmButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,13 +59,15 @@ class CreateAccountDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         emailField=view.findViewById<EditText>(R.id.editTextTextEmailAddress)
         passwordField=view.findViewById<EditText>(R.id.editTextTextPassword)
-        createAccountButton=view.findViewById<Button>(R.id.create_account_btn)
+        confirmButton=view.findViewById<Button>(R.id.confirm_dialog_btn)
+    }
 
-        createAccountButton.setOnClickListener {
+    override fun onResume() {
+        super.onResume()
+        confirmButton.setOnClickListener {
             createAccount(emailField.text.toString(),passwordField.text.toString())
+            onDestroy()
         }
-
-
     }
 
     private fun createAccount(email: String, password: String) {

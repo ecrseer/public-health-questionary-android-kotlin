@@ -23,6 +23,7 @@ class MainViewModel(private val repository: EvaluatorRepository) : ViewModel() {
     val allSessionsLiveData:LiveData<List<EvaluatorSession>>  = repository.getAllSessions().asLiveData()
 
     suspend fun add(): Long {
+
         val encriptedCompanyName = CriptoString()
         encriptedCompanyName.setClearText("b2w cococo")
         val test =  EvaluatorSession(null,encriptedCompanyName,"rj", "sdsf")
