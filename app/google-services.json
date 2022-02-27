@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "665615819659",
+    "project_id": "dr3-gabriel-justino-tp3",
+    "storage_bucket": "dr3-gabriel-justino-tp3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665615819659:android:312f3402aea1ac597a858e",
+        "android_client_info": {
+          "package_name": "br.infnet.dr3_gabriel_justino_tp3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665615819659-5rtmf80061397t3r917fvtnrl4ig17a2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpYiIHMoVabgozqnwsYObEw99Te2vVmIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665615819659-5rtmf80061397t3r917fvtnrl4ig17a2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

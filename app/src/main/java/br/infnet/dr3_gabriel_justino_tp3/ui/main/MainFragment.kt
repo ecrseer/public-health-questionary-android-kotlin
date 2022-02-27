@@ -1,5 +1,6 @@
 package br.infnet.dr3_gabriel_justino_tp3.ui.main
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.databinding.MainFragmentBinding
+import br.infnet.dr3_gabriel_justino_tp3.ui.main.ui.home.CreateAccountDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,6 +28,8 @@ class MainFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
 
 
     //private lateinit var viewModel: MainViewModel
@@ -66,6 +70,11 @@ class MainFragment : Fragment() {
         })
         binding.message.setOnClickListener { mview ->
             viewModel.readFirstCompanyName()
+        }
+        binding.button.setOnClickListener {
+            /*val startQ = Intent(requireActivity(),QuestionaryActivity::class.java)
+            startActivity(startQ)*/
+            CreateAccountDialog().show(childFragmentManager,"criar ")
         }
 
     }

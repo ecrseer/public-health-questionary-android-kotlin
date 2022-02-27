@@ -2,14 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.infnet.dr3_gabriel_justino_tp3">
 
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+
     <application
-        android:allowBackup="true"
         android:name=".PublicHealthQuestionaryApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dr3_gabriel_justino_tp3">
+        <activity
+            android:name=".ui.main.QuestionaryActivity"
+            android:exported="true"
+            android:label="@string/title_activity_questionary" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
