@@ -15,15 +15,16 @@ import br.infnet.dr3_gabriel_justino_tp3.databinding.FragmentQuestionaryBinding
 
 class QuestionaryFragment : Fragment() {
 
-    private lateinit var binding: FragmentQuestionaryBinding
+    private var _binding: FragmentQuestionaryBinding? = null
 
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentQuestionaryBinding.inflate(inflater,container,false)
+        _binding = FragmentQuestionaryBinding.inflate(inflater,container,false)
         return binding.root
     }
 
@@ -38,6 +39,10 @@ class QuestionaryFragment : Fragment() {
 
         bottomBtns.setupWithNavController(navController)
 
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding=null
     }
 
 }
