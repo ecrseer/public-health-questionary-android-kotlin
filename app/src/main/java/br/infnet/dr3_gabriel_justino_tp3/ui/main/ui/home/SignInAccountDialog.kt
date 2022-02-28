@@ -14,15 +14,19 @@ class SignInAccountDialog : CreateAccountDialog() {
             with(publicHealthQuestionaryApplication) {
                 mAuth?.signInWithEmailAndPassword(email, password)
                     ?.addOnCompleteListener(requireActivity()) { task ->
-                        mUser = if (task.isSuccessful && mAuth !=null) {
-                            mAuth!!.currentUser
+                        if (task.isSuccessful && mAuth !=null) {
+                            mUser =  mAuth!!.currentUser
+                            Toast.makeText(this,"bem vindo de volta",
+                                Toast.LENGTH_LONG+4242).show()
+                            activityViewModel.isLoggedIn.postValue(true)
+                            dismiss()
                         } else {
                             Log.d("ERRO LOGIN/CREATE", "${task.exception!!.message}")
                             Toast.makeText(
                                 this, "Falha na Autenticação",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            null
+                            mUser =   null
                         }
                     }
 

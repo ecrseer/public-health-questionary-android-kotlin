@@ -10,7 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import br.infnet.dr3_gabriel_justino_tp3.MainActivityViewModel
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.R
 
@@ -31,6 +35,7 @@ open class CreateAccountDialog : DialogFragment() {
     private var param2: String? = null
 
 
+    val activityViewModel: MainActivityViewModel by activityViewModels()
     lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
     lateinit var emailField:EditText
     lateinit var passwordField:EditText

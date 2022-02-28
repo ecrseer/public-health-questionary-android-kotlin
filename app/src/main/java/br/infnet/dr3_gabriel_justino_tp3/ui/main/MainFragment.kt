@@ -74,8 +74,7 @@ class MainFragment : Fragment() {
             viewModel.readFirstCompanyName()
         }
         binding.createAccountBtn.setOnClickListener {
-            /*val startQ = Intent(requireActivity(),QuestionaryActivity::class.java)
-            startActivity(startQ)*/
+
             CreateAccountDialog().show(childFragmentManager,"criar ")
         }
         binding.signinButton.setOnClickListener {
