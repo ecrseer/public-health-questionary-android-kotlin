@@ -10,6 +10,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import br.infnet.dr3_gabriel_justino_tp3.R
 import br.infnet.dr3_gabriel_justino_tp3.databinding.FragmentQuestionaryBinding
 
@@ -26,8 +27,8 @@ class QuestionFragment : Fragment() {
     private lateinit var optionsRadioGroup: RadioGroup
     private lateinit var yesRadioButton: RadioButton
     private lateinit var noRadioButton: RadioButton
+    private lateinit var questionTxt:TextView
 
-    private lateinit var viewModel: QuestionViewModel
 
     private val createSessionViewModel by viewModels<CreateEvaluatorSessionViewModel>({
         requireParentFragment()
@@ -39,32 +40,38 @@ class QuestionFragment : Fragment() {
     ): View? {
         _binding = FragmentQuestionaryBinding.inflate(inflater, container, false)
 
-
+        // nao consigo usar viewbinding aqui
         // return binding.root
         return inflater.inflate(R.layout.question_fragment, container, false)
     }
+    private fun getViewFields(view:View){
+        with(view){
+            questionTxt = findViewById(R.id.txt_question)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        with(view) {
-            optionsRadioGroup = findViewById<RadioGroup>(R.id.answers_radiogroup)
-
-            yesRadioButton = findViewById<RadioButton>(R.id.yes_radiobtn)
-            noRadioButton = findViewById<RadioButton>(R.id.no_radiobtn)
-            setOnClickListener {
-                val isYesSelected = optionsRadioGroup.checkedRadioButtonId == R.id.yes_radiobtn
-                val optTxt = if (isYesSelected) "Sim" else "Nao"
-                findViewById<TextView>(R.id.txt_question).setText(optTxt)
-                createSessionViewModel.setText(optTxt)
-            }
+            optionsRadioGroup = findViewById(R.id.answers_radiogroup)
+            yesRadioButton = findViewById(R.id.yes_radiobtn)
+            noRadioButton = findViewById(R.id.no_radiobtn)
         }
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(QuestionViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        createSessionViewModel.currentQuestion.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                questionTxt.setText(it)
+            }
+        })
+        with(view) {
+           getViewFields(this)
+           optionsRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+               val isYesSelected = checkedId == R.id.yes_radiobtn
+               createSessionViewModel.setAnswer(isYesSelected)
+           }
+        }
+
+
     }
+
 
 }

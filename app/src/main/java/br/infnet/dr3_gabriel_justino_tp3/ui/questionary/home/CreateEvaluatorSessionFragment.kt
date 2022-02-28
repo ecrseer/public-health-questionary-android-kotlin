@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import br.infnet.dr3_gabriel_justino_tp3.databinding.FragmentCreateEvaluatorSessionBinding
+import br.infnet.dr3_gabriel_justino_tp3.domain.Questions
 
 class CreateEvaluatorSessionFragment : Fragment() {
 
@@ -38,16 +39,39 @@ class CreateEvaluatorSessionFragment : Fragment() {
         createSessionViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+        createSessionViewModel._questions.observe(viewLifecycleOwner, Observer {
+            it?.let{
+                val d = 0
+            }
+        })
 
 
 
         return root
     }
 
+    private fun test(){
+        val qest = Questions.allQuestions
+
+        createSessionViewModel._questions.postValue(qest)
+        val d = createSessionViewModel._questions.value
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        test()
         with(binding.questionsViewpager as ViewPager2){
-            adapter = QuestionsAdapter(childFragmentManager,lifecycle,2)
+            val size = createSessionViewModel.questionsSize
+            adapter = QuestionsAdapter(childFragmentManager,lifecycle,size)
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    val q = createSessionViewModel._questions.value
+                    val t = createSessionViewModel.currentQuestion.value
+                    val p = createSessionViewModel.currentPosition.value
+                    createSessionViewModel.currentPosition.postValue(position)
+
+                    super.onPageSelected(position)
+                }
+            })
         }
         //createSessionViewModel.setText("banana")
     }
