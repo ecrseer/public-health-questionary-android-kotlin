@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import br.infnet.dr3_gabriel_justino_tp3.ui.main.MainFragment
-import br.infnet.dr3_gabriel_justino_tp3.ui.main.QuestionaryFragment
+import br.infnet.dr3_gabriel_justino_tp3.ui.login.LoginFragment
+import br.infnet.dr3_gabriel_justino_tp3.ui.questionary.QuestionaryFragment
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -29,7 +29,7 @@ open class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById<Toolbar>(R.id.toolbar))
         if (savedInstanceState == null) {
-            goToPage(MainFragment.newInstance())
+            goToPage(LoginFragment.newInstance())
         }
         publicHealthQuestionaryApplication = application as PublicHealthQuestionaryApplication
         with(publicHealthQuestionaryApplication){
@@ -64,7 +64,7 @@ open class MainActivity : AppCompatActivity() {
             if(loggedIn) {
                 goToPage(QuestionaryFragment())
             }else{
-                goToPage(MainFragment.newInstance())
+                goToPage(LoginFragment.newInstance())
             }
         })
         with(publicHealthQuestionaryApplication){

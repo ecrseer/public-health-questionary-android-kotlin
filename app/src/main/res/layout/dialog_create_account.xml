@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="420dp"
-    tools:context=".ui.main.ui.home.CreateAccountFragment">
+    tools:context=".ui.questionary.home.CreateAccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

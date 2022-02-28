@@ -1,4 +1,4 @@
-package br.infnet.dr3_gabriel_justino_tp3.ui.main.ui.home
+package br.infnet.dr3_gabriel_justino_tp3.ui.login
 
 import android.app.Dialog
 import android.os.Bundle
@@ -10,10 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import br.infnet.dr3_gabriel_justino_tp3.MainActivityViewModel
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.R
@@ -79,15 +77,16 @@ open class CreateAccountDialog : DialogFragment() {
         with(publicHealthQuestionaryApplication) {
             mAuth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener(requireActivity()) { task ->
-                    mUser = if (task.isSuccessful && mAuth !=null) {
-                        mAuth!!.currentUser
+                    if (task.isSuccessful && mAuth !=null) {
+                        mUser =  mAuth!!.currentUser
+                        dismiss()
                     } else {
                         Log.d("ERRO LOGIN/CREATE", "${ task.exception!!.message }")
                         Toast.makeText(
                             this, "Falha na Autenticação",
                             Toast.LENGTH_SHORT
                         ).show()
-                        null
+                        mUser =   null
                     }
                     //updateUI()
                 }

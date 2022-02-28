@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dr3_gabriel_justino_tp3">
         <activity
-            android:name=".ui.main.QuestionaryFragment"
+            android:name=".ui.questionary.QuestionaryFragment"
             android:exported="true"
             android:label="@string/title_activity_questionary" />
         <activity

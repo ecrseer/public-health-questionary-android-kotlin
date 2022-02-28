@@ -1,7 +1,5 @@
-package br.infnet.dr3_gabriel_justino_tp3.ui.main
+package br.infnet.dr3_gabriel_justino_tp3.ui.login
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,27 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
-import br.infnet.dr3_gabriel_justino_tp3.R
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import br.infnet.dr3_gabriel_justino_tp3.MainActivityViewModel
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
-import br.infnet.dr3_gabriel_justino_tp3.databinding.MainFragmentBinding
-import br.infnet.dr3_gabriel_justino_tp3.ui.main.ui.home.CreateAccountDialog
-import br.infnet.dr3_gabriel_justino_tp3.ui.main.ui.home.SignInAccountDialog
+import br.infnet.dr3_gabriel_justino_tp3.databinding.LoginFragmentBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainFragment : Fragment() {
+class LoginFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = LoginFragment()
     }
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: LoginFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
@@ -48,7 +43,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         //return inflater.inflate(R.layout.main_fragment, container, false)
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
