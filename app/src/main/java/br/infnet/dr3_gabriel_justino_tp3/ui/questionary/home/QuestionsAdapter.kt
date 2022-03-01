@@ -6,32 +6,33 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class QuestionsAdapter (fa: FragmentManager, lifecycl: Lifecycle,
-                        var tamanho:Int?) : FragmentStateAdapter(fa,lifecycl) {
-    override fun getItemCount(): Int = tamanho?: 2
+class QuestionsAdapter
+constructor(
+    fa: FragmentManager,
+    lifecycl: Lifecycle,
+    var tamanho: Int?
+) : FragmentStateAdapter(fa, lifecycl) {
+    override fun getItemCount(): Int = tamanho ?: 2
 
-    fun changeSize(novo:Int){
-        if(tamanho!=novo){
+    fun changeSize(novo: Int) {
+        if (tamanho != novo) {
             tamanho = novo;
             notifyDataSetChanged()
         }
     }
-    private fun questionOfPosition(position: Int): Fragment {
-        val frag = QuestionFragment.newInstance()
-        frag.arguments = bundleOf("posicaoQuestaoSelecionada" to position)
-        return frag;
-    }
+
 
 
     override fun createFragment(position: Int): Fragment {
-        return questionOfPosition(position);
+
+        val frag = QuestionFragment()
+        frag.arguments = bundleOf("posicaoQuestaoSelecionada" to position)
+        return frag;
     }
 
     override fun getItemId(position: Int): Long {
         return super.getItemId(position)
     }
-
-
 
 
 }

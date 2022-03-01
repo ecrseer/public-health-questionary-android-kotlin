@@ -7,6 +7,6 @@ object Questions {
         " As prateleiras, geladeiras e congeladores estão em perfeitas condições de higiene e funcionamento?",
         "Existe Descarte do lixo consciente?",
         "Banheiros distantes da cozinha?",
-        "Rede de esgoto funcional ou fossa séptica?"
+        "Existe Rede de esgoto funcional ou fossa séptica?"
     )
 }

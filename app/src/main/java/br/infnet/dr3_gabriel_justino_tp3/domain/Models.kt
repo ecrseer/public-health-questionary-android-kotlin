@@ -11,7 +11,8 @@ data class EvaluatorSession(
     val idEvaluator:Long? = null,
     val companyName: CriptoString,
     val district:String,
-    val answers: String
+    val answers: String,
+    val firebaseEmail:String,
 )
 
 @Dao
@@ -21,6 +22,9 @@ interface EvaluatorSessionDAO{
 
     @Insert
     fun insert(evaluatorSession: EvaluatorSession):Long
+
+    @Update
+    fun update(evaluatorSession: EvaluatorSession)
 }
 
 class EvaluatorRepository(private val evaluatorSessionDAO: EvaluatorSessionDAO){
@@ -35,6 +39,12 @@ class EvaluatorRepository(private val evaluatorSessionDAO: EvaluatorSessionDAO){
     @WorkerThread
     suspend fun addNewSession (evaluatorSession: EvaluatorSession):Long{
         return evaluatorSessionDAO.insert(evaluatorSession)
+
+    }
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun editSession (evaluatorSession: EvaluatorSession){
+        return evaluatorSessionDAO.update(evaluatorSession)
 
     }
 
