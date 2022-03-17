@@ -10,9 +10,10 @@ data class EvaluatorSession(
     @PrimaryKey(autoGenerate = true)
     val idEvaluator:Long? = null,
     val companyName: CriptoString,
-    val district:String,
+    val district:CriptoString,
     val answers: String,
     val firebaseEmail:String,
+    val timestamp: Long? = null
 )
 
 @Dao

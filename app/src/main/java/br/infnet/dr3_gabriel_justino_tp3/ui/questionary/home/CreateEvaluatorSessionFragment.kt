@@ -60,7 +60,7 @@ class CreateEvaluatorSessionFragment : Fragment() {
                     val d = 0
                 }
             })
-            answers.observe(viewLifecycleOwner, Observer {
+            answersChars.observe(viewLifecycleOwner, Observer {
                 it.let{
 
                 }
@@ -79,6 +79,7 @@ class CreateEvaluatorSessionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         with(binding.questionsViewpager as ViewPager2){
             val size = createSessionViewModel.questionsSize
             adapter = QuestionsAdapter(childFragmentManager,lifecycle,size+1)

@@ -38,6 +38,7 @@ class QuestionFragment : Fragment() {
     private val createSessionViewModel by viewModels<CreateEvaluatorSessionViewModel>({
         requireParentFragment()
     })
+    private val viewModel:QuestionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,9 +62,13 @@ class QuestionFragment : Fragment() {
         }
 
     }
+    private fun setupQuestionViewModel(){
+        //viewModel.currentAnswer.post
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupQuestionViewModel()
         with(createSessionViewModel){
             currentQuestion.observe(viewLifecycleOwner, Observer {
                 it?.let {
@@ -79,17 +84,6 @@ class QuestionFragment : Fragment() {
                     createSessionBtn.visibility = View.GONE
                 }
             })
-            currentAnswer.observe(viewLifecycleOwner, Observer {isYes->
-                isYes?.let{
-                    val shouldMarkYes = !yesRadioButton.isChecked && isYes
-                    if(shouldMarkYes)
-                        yesRadioButton.isChecked = isYes
-
-                    val shouldMarkNo = !noRadioButton.isChecked && !isYes
-                    if(shouldMarkNo)
-                        noRadioButton.isChecked = !isYes
-                }
-            })
         }
 
 
@@ -102,7 +96,7 @@ class QuestionFragment : Fragment() {
 
             }
             createSessionBtn.setOnClickListener {
-
+                createSessionViewModel.storeAnswers()
             }
         }
 
@@ -112,6 +106,21 @@ class QuestionFragment : Fragment() {
     private fun resetQuestionText() {
         questionTxt?.let {
             it.setText("---")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        createSessionViewModel.currentAnswer.let {liveData->
+            liveData.value?.let{isYes->
+                val shouldMarkYes = !yesRadioButton.isChecked && isYes
+                if(shouldMarkYes)
+                    yesRadioButton.isChecked = true
+
+                val shouldMarkNo = !noRadioButton.isChecked && !isYes
+                if(shouldMarkNo)
+                    noRadioButton.isChecked = true
+            }
         }
     }
 

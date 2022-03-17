@@ -29,8 +29,11 @@ constructor(private val repository: EvaluatorRepository) : ViewModel() {
     suspend fun add(): Long {
 
         val encriptedCompanyName = CriptoString()
-        encriptedCompanyName.setClearText("b2w cococo")
-        val test = EvaluatorSession(null, encriptedCompanyName, "rj", "sdsf","")
+        encriptedCompanyName.setClearText("b2w www")
+
+        val encriptedDistrictName = CriptoString()
+        encriptedDistrictName.setClearText("rj")
+        val test = EvaluatorSession(null, encriptedCompanyName, encriptedDistrictName, "sdsf","")
         var addedSessionId = 0L
         coroutineScope {
             addedSessionId = async { repository.addNewSession(test) }.await()
