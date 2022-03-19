@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.databinding.FragmentCreateEvaluatorSessionBinding
-import br.infnet.dr3_gabriel_justino_tp3.domain.Questions
+import com.google.android.gms.ads.*
+import java.util.*
 
 class CreateEvaluatorSessionFragment : Fragment() {
 
@@ -75,7 +74,39 @@ class CreateEvaluatorSessionFragment : Fragment() {
     private fun changePage(value:Int){
         with(binding.questionsViewpager as ViewPager2){ currentItem+=value }
     }
+    private fun adsPubBind(view:View){
+     MobileAds.initialize(requireContext())
+        val adView = binding.adView
+        val adBuild = AdRequest.Builder().build()
 
+        adView.loadAd(adBuild)
+
+
+        adView.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            override fun onAdFailedToLoad(adError : LoadAdError) {
+                println("onAdFailedToLoad::: $adError")
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            override fun onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            override fun onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,7 +124,7 @@ class CreateEvaluatorSessionFragment : Fragment() {
         }
         binding.previousquestionBtn.setOnClickListener {changePage(-1)}
         binding.nextquestionBtn.setOnClickListener { changePage(1)}
-
+        adsPubBind(view)
     }
 
     override fun onDestroyView() {

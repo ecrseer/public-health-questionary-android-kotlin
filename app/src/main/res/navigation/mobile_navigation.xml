@@ -9,13 +9,21 @@
         android:id="@+id/navigation_home"
         android:name="br.infnet.dr3_gabriel_justino_tp3.ui.questionary.home.CreateEvaluatorSessionFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_create_evaluator_session" />
+        tools:layout="@layout/fragment_create_evaluator_session" >
+        <argument
+            android:name="sessionPosition"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="br.infnet.dr3_gabriel_justino_tp3.ui.questionary.dashboard.DashboardFragment"
+        android:id="@+id/navigation_list_evaluatorsessions"
+        android:name="br.infnet.dr3_gabriel_justino_tp3.ui.questionary.list.ListEvaluatorSessionsFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_evaluatorsessions_list" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"

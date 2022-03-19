@@ -1,4 +1,4 @@
-package br.infnet.dr3_gabriel_justino_tp3.ui.questionary.dashboard
+package br.infnet.dr3_gabriel_justino_tp3.ui.questionary.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,8 +1,7 @@
-package br.infnet.dr3_gabriel_justino_tp3.ui.questionary.dashboard
+package br.infnet.dr3_gabriel_justino_tp3.ui.questionary.list
 
 import androidx.lifecycle.*
 import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorRepository
-import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSession
 
 class ListEvaluatorSessionsViewModelFactory(
     private val repository: EvaluatorRepository
@@ -24,7 +23,7 @@ class ListEvaluatorSessionsViewModel(private val repository: EvaluatorRepository
     val allSessions = repository.getAllSessions().asLiveData()
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "AAAA"
     }
     val text: LiveData<String> = _text
 }

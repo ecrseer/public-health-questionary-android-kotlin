@@ -8,6 +8,7 @@ import br.infnet.dr3_gabriel_justino_tp3.services.CriptoString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CreateEvaluatorSessionViewModelFactory(private val repository: EvaluatorRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -94,9 +95,11 @@ class CreateEvaluatorSessionViewModel
 
         val encriptedDistrictName = CriptoString()
         encriptedDistrictName.setClearText("rj")
+        val now = Calendar.getInstance().time.time
         val session = EvaluatorSession(null,
             encriptedCompanyName, encriptedDistrictName,
-            answersString.value!!,"")
+            answersString.value!!,"",now)
+
         CoroutineScope(Dispatchers.IO).launch{
             val r = repository.addNewSession(session)
             println(r)
