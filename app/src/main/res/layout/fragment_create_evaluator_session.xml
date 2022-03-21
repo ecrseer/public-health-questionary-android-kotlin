@@ -36,7 +36,7 @@
         android:id="@+id/questions_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintBottom_toTopOf="@+id/nextquestion_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_home" />
@@ -53,15 +53,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+    <EditText
+        android:id="@+id/txt_session_district"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="23dp"
-        app:layout_constraintBottom_toTopOf="@+id/nextquestion_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-6327791955539503/6207496724"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Bairro"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/nextquestion_btn"
+        app:layout_constraintStart_toEndOf="@+id/previousquestion_btn"
+        app:layout_constraintTop_toBottomOf="@+id/questions_viewpager" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

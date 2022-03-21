@@ -23,7 +23,7 @@ class ListEvaluatorSessionsViewModel(private val repository: EvaluatorRepository
     val allSessions = repository.getAllSessions().asLiveData()
 
     private val _text = MutableLiveData<String>().apply {
-        value = "AAAA"
+        value = "Meus questionarios"
     }
     val text: LiveData<String> = _text
 }

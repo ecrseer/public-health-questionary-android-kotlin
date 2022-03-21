@@ -9,4 +9,5 @@ object Questions {
         "Banheiros distantes da cozinha?",
         "Existe Rede de esgoto funcional ou fossa séptica?"
     )
+    val emptyAnswersIntList = listOf(0,0,0,0,0,0)
 }

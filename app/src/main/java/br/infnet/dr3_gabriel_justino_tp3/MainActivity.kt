@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -63,10 +64,19 @@ open class MainActivity : AppCompatActivity() {
         activityViewModel.isLoggedIn.observe(this, Observer {loggedIn->
             if(loggedIn) {
                 goToPage(QuestionaryFragment())
+                activityViewModel.setFirestoreUser(
+                    publicHealthQuestionaryApplication.mUser)
             }else{
                 goToPage(LoginFragment.newInstance())
             }
         })
+        activityViewModel.currentFirestoreUser.observe(this, Observer {
+            it?.let {
+                Toast.makeText(this,
+                    "seu email de login é ${it.email}",Toast.LENGTH_LONG+4242).show()
+            }
+        })
+
         with(publicHealthQuestionaryApplication){
             mUser = mAuth?.currentUser
             mUser?.let{

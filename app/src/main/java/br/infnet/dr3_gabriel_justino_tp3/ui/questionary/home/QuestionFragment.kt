@@ -84,6 +84,7 @@ class QuestionFragment : Fragment() {
                     createSessionBtn.visibility = View.GONE
                 }
             })
+
         }
 
 
@@ -96,7 +97,10 @@ class QuestionFragment : Fragment() {
 
             }
             createSessionBtn.setOnClickListener {
-                createSessionViewModel.storeAnswers()
+                with(createSessionViewModel){
+                    actionState.postValue(PossibleActions.creating)
+                    storeAnswers()
+                }
             }
         }
 

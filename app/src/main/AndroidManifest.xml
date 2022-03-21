@@ -17,13 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dr3_gabriel_justino_tp3">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6327791955539503~8833660067"/>
-        <activity
-            android:name=".ui.questionary.QuestionaryFragment"
-            android:exported="true"
-            android:label="@string/title_activity_questionary" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

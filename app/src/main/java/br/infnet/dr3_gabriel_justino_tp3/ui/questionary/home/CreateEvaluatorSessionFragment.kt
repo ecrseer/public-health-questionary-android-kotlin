@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
+import br.infnet.dr3_gabriel_justino_tp3.R
 import br.infnet.dr3_gabriel_justino_tp3.databinding.FragmentCreateEvaluatorSessionBinding
-import com.google.android.gms.ads.*
-import java.util.*
+import com.google.android.material.snackbar.Snackbar
 
 class CreateEvaluatorSessionFragment : Fragment() {
 
@@ -24,10 +27,9 @@ class CreateEvaluatorSessionFragment : Fragment() {
         CreateEvaluatorSessionViewModelFactory(application.repository)
     }
     private var _binding: FragmentCreateEvaluatorSessionBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    val args: CreateEvaluatorSessionFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -35,33 +37,29 @@ class CreateEvaluatorSessionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-     /*   createEvaluatorSessionViewModel =
-            ViewModelProvider(this).get(CreateEvaluatorSessionViewModel::class.java)*/
-
         _binding = FragmentCreateEvaluatorSessionBinding.inflate(inflater, container, false)
-
-
         val textView: TextView = binding.textHome
 
-        with(createSessionViewModel){
+        with(createSessionViewModel) {
             text.observe(viewLifecycleOwner, Observer {
                 textView.text = it
             })
-
-
-            _questions.observe(viewLifecycleOwner, Observer {
-                it?.let{
-                    val d = 0
+            actionState.observe(viewLifecycleOwner, Observer { action ->
+                if (action === PossibleActions.creating) {
+                    val navAction = CreateEvaluatorSessionFragmentDirections.actionNavigationHomeToNavigationListEvaluatorsessions()
+                    findNavController().navigate(navAction)
+                    binding.questionsViewpager.currentItem = 0
                 }
+                if (action === PossibleActions.created) Snackbar.make(
+                    requireActivity().findViewById(R.id.questionary_navhost),
+                    "Respostas salvas com sucesso!", Snackbar.LENGTH_LONG
+                ).show()
             })
-            currentPosition.observe(viewLifecycleOwner, Observer {
-                it?.let{
-                    val d = 0
-                }
-            })
-            answersChars.observe(viewLifecycleOwner, Observer {
-                it.let{
-
+            selectedSessionId.observe(viewLifecycleOwner, Observer { it->
+                it.let { selectedId->
+                    if (selectedId != null) {
+                        updateSelectedSession(selectedId)
+                    }
                 }
             })
 
@@ -71,60 +69,40 @@ class CreateEvaluatorSessionFragment : Fragment() {
 
         return binding.root
     }
-    private fun changePage(value:Int){
-        with(binding.questionsViewpager as ViewPager2){ currentItem+=value }
-    }
-    private fun adsPubBind(view:View){
-     MobileAds.initialize(requireContext())
-        val adView = binding.adView
-        val adBuild = AdRequest.Builder().build()
-
-        adView.loadAd(adBuild)
 
 
-        adView.adListener = object: AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
 
-            override fun onAdFailedToLoad(adError : LoadAdError) {
-                println("onAdFailedToLoad::: $adError")
-                // Code to be executed when an ad request fails.
-            }
-
-            override fun onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        }
+    private fun changePage(value: Int) {
+        with(binding.questionsViewpager as ViewPager2) { currentItem += value }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding.questionsViewpager as ViewPager2){
+        val selectedPosition = args.sessionPosition.toInt()
+        if(selectedPosition>=0){
+            createSessionViewModel.selectedSessionId.postValue(selectedPosition.toLong())
+
+        }
+        with(binding.questionsViewpager as ViewPager2) {
             val size = createSessionViewModel.questionsSize
-            adapter = QuestionsAdapter(childFragmentManager,lifecycle,size+1)
+            adapter = QuestionsAdapter(childFragmentManager, lifecycle, size + 1)
 
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                    createSessionViewModel.currentPosition.postValue(position)
+                    createSessionViewModel.currentAnswerPosition.postValue(position)
                     super.onPageSelected(position)
                 }
             })
         }
-        binding.previousquestionBtn.setOnClickListener {changePage(-1)}
-        binding.nextquestionBtn.setOnClickListener { changePage(1)}
-        adsPubBind(view)
+        binding.previousquestionBtn.setOnClickListener { changePage(-1) }
+        binding.nextquestionBtn.setOnClickListener { changePage(1) }
+        binding.txtSessionDistrict.doAfterTextChanged {
+            it?.let{
+                val district = it.toString()
+                createSessionViewModel.setDistrict(district)
+            }
+        }
     }
 
     override fun onDestroyView() {

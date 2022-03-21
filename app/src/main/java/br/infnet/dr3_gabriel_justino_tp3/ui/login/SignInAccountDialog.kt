@@ -16,16 +16,12 @@ class SignInAccountDialog : CreateAccountDialog() {
                     ?.addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful && mAuth !=null) {
                             mUser =  mAuth!!.currentUser
-                            Toast.makeText(this,"bem vindo de volta",
-                                Toast.LENGTH_LONG+4242).show()
+                            showMessageSnack("bem vindo de volta")
                             activityViewModel.isLoggedIn.postValue(true)
                             dismiss()
                         } else {
                             Log.d("ERRO LOGIN/CREATE", "${task.exception!!.message}")
-                            Toast.makeText(
-                                this, "Falha na Autenticação",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showMessageSnack( "Falha na Autenticação")
                             mUser =   null
                         }
                     }

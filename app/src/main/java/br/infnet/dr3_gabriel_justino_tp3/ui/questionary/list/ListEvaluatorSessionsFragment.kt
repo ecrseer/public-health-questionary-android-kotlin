@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import br.infnet.dr3_gabriel_justino_tp3.MainActivityViewModel
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.databinding.FragmentEvaluatorsessionsListBinding
 import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSession
@@ -21,17 +24,22 @@ class ListEvaluatorSessionsFragment : Fragment() {
     }
     private var _binding: FragmentEvaluatorsessionsListBinding? = null
 
+    val activityViewModel: MainActivityViewModel by activityViewModels()
+    lateinit var publicHealthQuestionaryApplication: PublicHealthQuestionaryApplication
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     private fun setAdapterAgain(sessionList: List<EvaluatorSession>?) {
         val navToSession = { position: Int ->
-            val action = FragDirections
+            val action = ListEvaluatorSessionsFragmentDirections
+                .actionNavigationDashboardToNavigationHome(position.toString())
 
             /*val acao =
                 TabFragmentDirections.actionTabFragmentToNotaViewPagerFragment(posicao, false)
-            findNavController().navigate(acao)*/
-            println(position)
+            */
+            findNavController().navigate(action)
+            println("positionnnn $position")
         }
         with(binding.evaluatorsessionsRv) {
             if (sessionList != null) {
@@ -63,6 +71,17 @@ class ListEvaluatorSessionsFragment : Fragment() {
             })
         }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnLogout.setOnClickListener {
+            val application = requireActivity().application as PublicHealthQuestionaryApplication
+            application.mAuth?.apply{
+                signOut()
+                activityViewModel.isLoggedIn.postValue(false)
+            }
+        }
     }
 
 

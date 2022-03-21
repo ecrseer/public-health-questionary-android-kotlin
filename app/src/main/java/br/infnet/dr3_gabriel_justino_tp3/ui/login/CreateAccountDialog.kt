@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import br.infnet.dr3_gabriel_justino_tp3.MainActivityViewModel
 import br.infnet.dr3_gabriel_justino_tp3.PublicHealthQuestionaryApplication
 import br.infnet.dr3_gabriel_justino_tp3.R
+import com.google.android.material.snackbar.Snackbar
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,6 +73,12 @@ open class CreateAccountDialog : DialogFragment() {
             onDestroy()
         }
     }
+    fun showMessageSnack(message:String){
+        Toast.makeText(
+            requireContext(), "$message",
+            Toast.LENGTH_SHORT+4242
+        ).show()
+    }
 
     private fun createAccount(email: String, password: String) {
         with(publicHealthQuestionaryApplication) {
@@ -79,13 +86,13 @@ open class CreateAccountDialog : DialogFragment() {
                 ?.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful && mAuth !=null) {
                         mUser =  mAuth!!.currentUser
+                        activityViewModel.isLoggedIn.postValue(true)
+                        activityViewModel.createUserOnFirestore(mUser)
+                        showMessageSnack("Usuario criado com sucesso! ${mUser?.uid}")
                         dismiss()
                     } else {
                         Log.d("ERRO LOGIN/CREATE", "${ task.exception!!.message }")
-                        Toast.makeText(
-                            this, "Falha na Autenticação",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showMessageSnack("Falha na Autenticação")
                         mUser =   null
                     }
                     //updateUI()
