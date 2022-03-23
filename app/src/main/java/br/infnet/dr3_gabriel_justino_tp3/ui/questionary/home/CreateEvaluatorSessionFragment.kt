@@ -9,6 +9,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -46,14 +47,15 @@ class CreateEvaluatorSessionFragment : Fragment() {
             })
             actionState.observe(viewLifecycleOwner, Observer { action ->
                 if (action === PossibleActions.creating) {
-                    val navAction = CreateEvaluatorSessionFragmentDirections.actionNavigationHomeToNavigationListEvaluatorsessions()
-                    findNavController().navigate(navAction)
                     binding.questionsViewpager.currentItem = 0
                 }
-                if (action === PossibleActions.created) Snackbar.make(
-                    requireActivity().findViewById(R.id.questionary_navhost),
-                    "Respostas salvas com sucesso!", Snackbar.LENGTH_LONG
-                ).show()
+                if (action === PossibleActions.created) {
+                    Snackbar.make(
+                        requireActivity().findViewById(R.id.questionary_navhost),
+                        "Respostas salvas com sucesso!", Snackbar.LENGTH_LONG
+                    ).show()
+                    findNavController().popBackStack()
+                }
             })
             selectedSessionId.observe(viewLifecycleOwner, Observer { it->
                 it.let { selectedId->

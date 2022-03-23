@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/navigation_list_evaluatorsessions">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="br.infnet.dr3_gabriel_justino_tp3.ui.questionary.notifications.NotificationsFragment"
+        android:name="br.infnet.dr3_gabriel_justino_tp3.ui.questionary.notifications.SynthsizedDataFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_synthsizeddata" />
 </navigation>

@@ -92,6 +92,7 @@ class QuestionFragment : Fragment() {
             getViewFields(this)
             optionsRadioGroup.setOnCheckedChangeListener { group, checkedId ->
                 val isYesSelected = checkedId == R.id.yes_radiobtn
+
                 ///application.mUser.email
                 createSessionViewModel.setAnswer2(isYesSelected)
 
@@ -116,12 +117,14 @@ class QuestionFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         createSessionViewModel.currentAnswer.let {liveData->
-            liveData.value?.let{isYes->
+            liveData.value?.let{charValue->
+                val isYes = charValue == '9'
                 val shouldMarkYes = !yesRadioButton.isChecked && isYes
                 if(shouldMarkYes)
                     yesRadioButton.isChecked = true
 
-                val shouldMarkNo = !noRadioButton.isChecked && !isYes
+                val isNo = charValue == '1'
+                val shouldMarkNo = !noRadioButton.isChecked && isNo
                 if(shouldMarkNo)
                     noRadioButton.isChecked = true
             }

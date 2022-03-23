@@ -1,13 +1,11 @@
 package br.infnet.dr3_gabriel_justino_tp3.ui.questionary.home
 
 import androidx.lifecycle.*
-import br.infnet.dr3_gabriel_justino_tp3.domain.DistrictSynthData
-import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorRepository
-import br.infnet.dr3_gabriel_justino_tp3.domain.EvaluatorSession
-import br.infnet.dr3_gabriel_justino_tp3.domain.Questions
+import br.infnet.dr3_gabriel_justino_tp3.domain.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -78,8 +76,6 @@ constructor(private val repository: EvaluatorRepository) : ViewModel() {
     //val answers = repository.get
 
 
-
-
     val answersString = MutableLiveData<String>().apply { value = "000000" }
     val answersChars = MutableLiveData<CharArray>().apply {
         value = "000000".toCharArray()
@@ -88,7 +84,7 @@ constructor(private val repository: EvaluatorRepository) : ViewModel() {
     fun setAnswer2(isYesSelected: Boolean) {
 
         val previousAnswers = answersString.value
-        val optionSelected = if (isYesSelected) '1' else '0'
+        val optionSelected = if (isYesSelected) '9' else '1'
 
         currentAnswerPosition?.value?.let { position ->
             val charAnswers: CharArray? = answersChars.value
@@ -107,24 +103,23 @@ constructor(private val repository: EvaluatorRepository) : ViewModel() {
     }
 
 
-    val currentAnswer = Transformations.switchMap(answersChars) { answersChars ->
+    val currentAnswer = Transformations.map(answersChars) { answersChars ->
         val answers = answersChars
-         currentAnswerPosition.value?.let{ position->
-            answers.let {
-                val charList = it
+        currentAnswerPosition.value?.let { position ->
+            answers.let {charList->
+
                 if (position >= charList.size) {
-                    MutableLiveData<Boolean>().apply { value=false }
+                    '0'
                 } else {
-                    val isYes = charList[position] == '1'
-                    MutableLiveData<Boolean>().apply { value=isYes }
+                    charList[position]
                 }
             }
 
         }
     }
 
-    val _chosenDistrict = MutableLiveData<String>().apply { value="" }
-    fun setDistrict(txt:String){
+    val _chosenDistrict = MutableLiveData<String>().apply { value = "" }
+    fun setDistrict(txt: String) {
         viewModelScope.launch {
             _chosenDistrict.postValue(txt)
         }
@@ -137,34 +132,57 @@ constructor(private val repository: EvaluatorRepository) : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val createdId = repository.addNewSession(session)
             if (createdId != -1L) actionState.postValue(PossibleActions.created)
-            val syntDataCollection= Firebase.firestore.collection("synthesizedData")
-            val task = syntDataCollection.document("$district").get()
-            task.addOnSuccessListener {doc->
-                val districtSynthData = doc.toObject<DistrictSynthData>()
-                if(districtSynthData==null){
-                    var newDistrictSynthData = DistrictSynthData(
-                        district,district,0,
-                        Questions.emptyAnswersIntList)
 
-                    val task = syntDataCollection
-                        .document("$district")
-                        .set(newDistrictSynthData)
+            val districtSyntData = DistrictSynthDataRepository
+                .districtSyntData
+                .document("$district")
+            val taskGetDistricts = districtSyntData.get()
+
+            taskGetDistricts.addOnSuccessListener { doc ->
+                createSynthsizedDataIfNotExistsOnFirestore(doc, district,districtSyntData)
+                districtSyntData.get().addOnSuccessListener { doc ->
+                    addAnswersStatisticsToSynthsizedDataOnFirestore(doc, districtSyntData)
                 }
             }
-            task.addOnFailureListener {
+            taskGetDistricts.addOnFailureListener {
                 println(it)
-            }
-
-            val taskGetDistricts = syntDataCollection.get()
-            taskGetDistricts.addOnSuccessListener { districts->
-            val districtsSynth = districts.toObjects<DistrictSynthData>()
-            districtsSynth?.let{
-
-            }
-
             }
 
 
         }
+    }
+
+    private fun addAnswersStatisticsToSynthsizedDataOnFirestore(
+        doc: DocumentSnapshot?,
+        districtSyntData: DocumentReference
+    ) {
+        doc?.let {
+            val districtObjData = doc.toObject<DistrictSynthData>()
+            districtObjData?.let { districtData ->
+                answersString.value?.let { answrs ->
+                    districtData.setSynthsizedDataByStringAnswers(answrs)
+                }
+
+                districtSyntData.set(districtData)
+
+            }
+
+        }
+    }
+
+    private fun createSynthsizedDataIfNotExistsOnFirestore(
+        doc: DocumentSnapshot, district: String, districtSyntData: DocumentReference
+    ) {
+        val districtSynthDataToObj = doc.toObject<DistrictSynthData>()
+        if (districtSynthDataToObj == null) {
+            var newDistrictSynthData = DistrictSynthData(
+                district, district, 0,
+                Questions.emptyAnswersIntList,
+                Questions.emptyAnswersIntList
+            )
+
+            val task = districtSyntData.set(newDistrictSynthData)
+        }
+
     }
 }

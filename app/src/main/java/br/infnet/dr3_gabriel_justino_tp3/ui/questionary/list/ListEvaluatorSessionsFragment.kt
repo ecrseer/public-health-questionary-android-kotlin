@@ -35,9 +35,6 @@ class ListEvaluatorSessionsFragment : Fragment() {
             val action = ListEvaluatorSessionsFragmentDirections
                 .actionNavigationDashboardToNavigationHome(position.toString())
 
-            /*val acao =
-                TabFragmentDirections.actionTabFragmentToNotaViewPagerFragment(posicao, false)
-            */
             findNavController().navigate(action)
             println("positionnnn $position")
         }
