@@ -85,17 +85,16 @@ open class CreateAccountDialog : DialogFragment() {
             mAuth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful && mAuth !=null) {
-                        mUser =  mAuth!!.currentUser
+                        /*mUser =  mAuth!!.currentUser
                         activityViewModel.isLoggedIn.postValue(true)
-                        activityViewModel.createUserOnFirestore(mUser)
+                        activityViewModel.createUserOnFirestore(mUser)*/
                         showMessageSnack("Usuario criado com sucesso! ${mUser?.uid}")
                         dismiss()
                     } else {
                         Log.d("ERRO LOGIN/CREATE", "${ task.exception!!.message }")
-                        showMessageSnack("Falha na Autenticação")
+                        showMessageSnack("email ou senha invalidos")
                         mUser =   null
                     }
-                    //updateUI()
                 }
         }
     }

@@ -46,18 +46,6 @@ open class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.logout_btn -> {
-                with(publicHealthQuestionaryApplication) {
-                    mAuth?.signOut()
-                    mUser = null
-                    activityViewModel.isLoggedIn.postValue(false)
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onStart() {
         super.onStart()
