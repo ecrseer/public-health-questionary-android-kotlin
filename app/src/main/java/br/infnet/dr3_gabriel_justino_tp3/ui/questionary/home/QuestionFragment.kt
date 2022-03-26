@@ -1,6 +1,5 @@
 package br.infnet.dr3_gabriel_justino_tp3.ui.questionary.home
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -83,6 +82,7 @@ class QuestionFragment : Fragment() {
                     optionsRadioGroup.visibility = View.VISIBLE
                     createSessionBtn.visibility = View.GONE
                 }
+
             })
 
         }
@@ -99,8 +99,8 @@ class QuestionFragment : Fragment() {
             }
             createSessionBtn.setOnClickListener {
                 with(createSessionViewModel){
-                    actionState.postValue(PossibleActions.creating)
-                    storeAnswers()
+                    actionState.value=PossibleActions.creating
+                    tryStoreAnswersIfNotEmptyDistrict()
                 }
             }
         }

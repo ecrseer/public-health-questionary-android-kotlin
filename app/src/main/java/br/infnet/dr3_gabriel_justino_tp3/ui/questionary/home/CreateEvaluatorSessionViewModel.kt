@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 object PossibleActions {
     const val creating = "creatingSession"
     const val created = "createdSession"
+    const val formErr = "formularyError"
 }
 
 class CreateEvaluatorSessionViewModelFactory(private val repository: EvaluatorRepository) :
@@ -125,30 +126,37 @@ constructor(private val repository: EvaluatorRepository) : ViewModel() {
         }
     }
 
-    fun storeAnswers() {
+
+    fun tryStoreAnswersIfNotEmptyDistrict() {
         val district = _chosenDistrict.value!!
         val session = EvaluatorSession.newEmpty(district)
 
+        if(actionState.value === PossibleActions.formErr) return
+
         CoroutineScope(Dispatchers.IO).launch {
-            val createdId = repository.addNewSession(session)
-            if (createdId != -1L) actionState.postValue(PossibleActions.created)
+            storeAnswers(session, district)        }
+    }
 
-            val districtSyntData = DistrictSynthDataRepository
-                .districtSyntData
-                .document("$district")
-            val taskGetDistricts = districtSyntData.get()
+    private suspend fun storeAnswers(
+        session: EvaluatorSession,
+        district: String
+    ) {
+        val createdId = repository.addNewSession(session)
+        if (createdId != -1L) actionState.postValue(PossibleActions.created)
 
-            taskGetDistricts.addOnSuccessListener { doc ->
-                createSynthsizedDataIfNotExistsOnFirestore(doc, district,districtSyntData)
-                districtSyntData.get().addOnSuccessListener { doc ->
-                    addAnswersStatisticsToSynthsizedDataOnFirestore(doc, districtSyntData)
-                }
+        val districtSyntData = DistrictSynthDataRepository
+            .districtSyntData
+            .document("$district")
+        val taskGetDistricts = districtSyntData.get()
+
+        taskGetDistricts.addOnSuccessListener { doc ->
+            createSynthsizedDataIfNotExistsOnFirestore(doc, district, districtSyntData)
+            districtSyntData.get().addOnSuccessListener { doc ->
+                addAnswersStatisticsToSynthsizedDataOnFirestore(doc, districtSyntData)
             }
-            taskGetDistricts.addOnFailureListener {
-                println(it)
-            }
-
-
+        }
+        taskGetDistricts.addOnFailureListener {
+            println(it)
         }
     }
 

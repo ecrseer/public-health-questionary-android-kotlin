@@ -9,7 +9,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -33,6 +32,12 @@ class CreateEvaluatorSessionFragment : Fragment() {
     val args: CreateEvaluatorSessionFragmentArgs by navArgs()
 
 
+    fun showMessage(message:String){
+        Snackbar.make(
+            requireActivity().findViewById(R.id.questionary_navhost),
+            "$message", Snackbar.LENGTH_LONG).show()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,24 +51,45 @@ class CreateEvaluatorSessionFragment : Fragment() {
                 textView.text = it
             })
             actionState.observe(viewLifecycleOwner, Observer { action ->
-                if (action === PossibleActions.creating) {
-                    binding.questionsViewpager.currentItem = 0
-                }
-                if (action === PossibleActions.created) {
-                    Snackbar.make(
-                        requireActivity().findViewById(R.id.questionary_navhost),
-                        "Respostas salvas com sucesso!", Snackbar.LENGTH_LONG
-                    ).show()
-                    findNavController().popBackStack()
+                when(action){
+                    PossibleActions.creating-> {
+                        binding.questionsViewpager.currentItem = 0
+                        val isTxtInvalid = binding.txtSessionDistrict.text
+                            .toString().isNullOrEmpty()
+                        if(isTxtInvalid)
+                            actionState.value =  PossibleActions.formErr
+                    }
+                    PossibleActions.created -> {
+                        showMessage("Respostas salvas com sucesso!")
+                        findNavController().popBackStack()
+                    }
+                    PossibleActions.formErr -> {
+                        showMessage("Preencha o campo de Bairro!")
+                        actionState.postValue("")
+                    }
                 }
             })
-            selectedSessionId.observe(viewLifecycleOwner, Observer { it->
-                it.let { selectedId->
+            selectedSessionId.observe(viewLifecycleOwner, Observer { it ->
+                it.let { selectedId ->
                     if (selectedId != null) {
                         updateSelectedSession(selectedId)
                     }
                 }
             })
+            /*currentAnswerPosition.observe(viewLifecycleOwner, Observer { currentPosition ->
+                _questions.value?.let { questions ->
+                    val isEndOfQuestionary = currentPosition == questions.size-1
+                    if (isEndOfQuestionary) {
+                        val isTxtFieldEmpty= binding.txtSessionDistrict.text.toString().isNullOrBlank()
+                        if(isTxtFieldEmpty){
+                            changePage(1)
+
+                        }
+                    }
+
+                }
+
+            })*/
 
         }
 
@@ -71,7 +97,6 @@ class CreateEvaluatorSessionFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     private fun changePage(value: Int) {
@@ -82,7 +107,7 @@ class CreateEvaluatorSessionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val selectedPosition = args.sessionPosition.toInt()
-        if(selectedPosition>=0){
+        if (selectedPosition >= 0) {
             createSessionViewModel.selectedSessionId.postValue(selectedPosition.toLong())
 
         }
@@ -97,10 +122,11 @@ class CreateEvaluatorSessionFragment : Fragment() {
                 }
             })
         }
+
         binding.previousquestionBtn.setOnClickListener { changePage(-1) }
         binding.nextquestionBtn.setOnClickListener { changePage(1) }
         binding.txtSessionDistrict.doAfterTextChanged {
-            it?.let{
+            it?.let {
                 val district = it.toString()
                 createSessionViewModel.setDistrict(district)
             }
